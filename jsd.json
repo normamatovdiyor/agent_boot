@@ -1,0 +1,10 @@
+ChatCompletion(
+id='gen-1785292923-lPLnAXd0SULJ3ZW7VwFL', 
+choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='Boot.dev is an exceptional platform for learning backend development because it emphasizes hands-on, project-based learning that immerses you in real-world coding challenges from day one. Its curriculum is structured around building practical applications, which reinforces theoretical concepts through direct experience with databases, APIs, authentication, and deployment. The platform’s mentorship-driven approach offers personalized feedback, ensuring learners grasp complex topics like server architecture and scalability. Additionally, its interactive, browser-based environment eliminates setup barriers, allowing seamless practice. By prioritizing problem-solving over passive learning, Boot.dev cultivates the critical thinking and technical agility needed to excel in backend development.\n', refusal=None, role='assistant', annotations=None, audio=None, function_call=None, tool_calls=None, reasoning=None), native_finish_reason='stop')], 
+created=1785292923, 
+model='nvidia/nemotron-nano-12b-v2-vl:free', 
+object='chat.completion', 
+moderation=None, 
+service_tier=None, 
+system_fingerprint=None, 
+usage=CompletionUsage(completion_tokens=126, prompt_tokens=32, total_tokens=158, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=None, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=None, image_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0, cache_write_tokens=0, video_tokens=0), cost=0, is_byok=False, cost_details={'upstream_inference_cost': 0, 'upstream_inference_prompt_cost': 0, 'upstream_inference_completions_cost': 0}), provider='Nvidia')
