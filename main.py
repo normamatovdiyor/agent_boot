@@ -2,8 +2,9 @@ import argparse
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
-
-
+from prompts import system_prompt
+from call_function import available_functions
+import json
 load_dotenv()
 api_key = os.environ.get("OPENROUTER_API_KEY")
 
@@ -11,7 +12,7 @@ api_key = os.environ.get("OPENROUTER_API_KEY")
 def gen_response(messages):
     if api_key == None:
             raise RuntimeError("none api key")
-    
+
     client = OpenAI(
         base_url="https://openrouter.ai/api/v1",
         api_key=api_key,
@@ -19,11 +20,12 @@ def gen_response(messages):
 
     return client.chat.completions.create(
             model="openrouter/free",
-            messages = messages
+            messages = messages,
+            tools = available_functions
         )
 
-    
-    
+
+
 def main():
 
     parser = argparse.ArgumentParser(description="Chatbot")
@@ -32,10 +34,15 @@ def main():
     args = parser.parse_args()
 
     messages = [
+        {"role": "system", "content": system_prompt},
         {"role": "user", "content": args.user_prompt},
     ]
 
     response =  gen_response(messages)
+    print(response)
+    for tool_call in response.choices[0].message.tool_calls:
+        function_args = json.loads(tool_call.function.arguments or "{}")
+        print(f"Calling function: {tool_call.function.name}({function_args})")
 
     if response.usage == None:
         raise RuntimeError("No response")

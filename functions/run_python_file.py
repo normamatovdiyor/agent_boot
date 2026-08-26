@@ -1,12 +1,36 @@
-import os 
+import os
 import subprocess
+
+schema_run_python_file={
+    "type": "function",
+    "function": {
+        "name": "run_python_file",
+        "description": "Executes a specified Python file within the working directory and returns its output",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "file_path": {
+                    "type": "string",
+                    "description": "Path to the Python file to run, relative to the working directory",
+                },
+                "args": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Optional list of arguments to pass to the Python script",
+                },
+            },
+            "required": ["file_path"],
+        },
+    },
+}
+
 def run_python_file(working_directory: str, file_path: str, args: list[str] | None = None) -> str:
     try:
         fn_rs =""
         abs_path = os.path.abspath(working_directory)
         file_path_ = os.path.normpath(os.path.join(abs_path, file_path))
         valid_target_dir = os.path.commonpath([abs_path, file_path_]) == abs_path
-        
+
         if not valid_target_dir:
             return f'Error: Cannot execute "{file_path}" as it is outside the permitted working directory'
 
@@ -32,7 +56,7 @@ def run_python_file(working_directory: str, file_path: str, args: list[str] | No
         returncode = res.returncode
         if returncode !=0:
             fn_rs+=f"Process exited with code {returncode}"
-        
+
         stdout = res.stdout
         stderr = res.stderr
         if not stdout and not stderr:
