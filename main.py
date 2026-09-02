@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 from prompts import system_prompt
-from call_function import available_functions
+from call_function import available_functions, call_function
 import json
 load_dotenv()
 api_key = os.environ.get("OPENROUTER_API_KEY")
@@ -39,10 +39,16 @@ def main():
     ]
 
     response =  gen_response(messages)
-    print(response)
     for tool_call in response.choices[0].message.tool_calls:
+
         function_args = json.loads(tool_call.function.arguments or "{}")
         print(f"Calling function: {tool_call.function.name}({function_args})")
+
+        result_message = call_function(tool_call, args.verbose)
+        if not result_message["content"]:
+             raise Exception("Empty result")
+        if args.verbose:
+             print(f"-> {result_message['content']}")
 
     if response.usage == None:
         raise RuntimeError("No response")
