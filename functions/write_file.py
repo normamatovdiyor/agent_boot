@@ -34,10 +34,18 @@ def write_file(working_directory: str, file_path: str, content: str) -> str:
         if os.path.isdir(file_path_):
             return f'Error: Cannot write to "{file_path}" as it is a directory'
 
-        os.makedirs(os.path.dirname(file_path_), exist_ok=True)
+        parent_dir = os.path.dirname(file_path_)
+        if not os.path.isdir(parent_dir):
+            return (
+                f'Warning: Refused to write to "{file_path}" because its parent directory '
+                f'does not exist. This usually means the path is wrong (for example, it '
+                f'duplicates part of the working directory). Call get_files_info to check '
+                f'the real directory structure and use an existing path, or ask the user '
+                f'to confirm before creating a brand new directory.'
+            )
 
-        with open(file_path_, 'w') as huy:
-            huy.write(content)
+        with open(file_path_, 'w') as f:
+            f.write(content)
 
         return f'Successfully wrote to "{file_path}" ({len(content)} characters written)'
     except Exception as e:
